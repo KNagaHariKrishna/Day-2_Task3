@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task-3</title>
+    <style>
+      body {
+        font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+          "Lucida Sans", Arial, sans-serif;
+      }
+      .movie-list {
+        display: flex;
+        margin: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <input id="inputbox" placeholder="search.." />
+      <button id="search_btn">Search</button>
+      <ul id="result"></ul>
+    </div>
+  </body>
+  <script>
+    const inputBox = document.getElementById("inputbox");
+    const search_btn = document.getElementById("search_btn");
+    const result = document.getElementById("result");
+
+    // let url = "http://www.omdbapi.com/?i=tt3896198&apikey=979eb7eb"
+
+    search_btn.addEventListener("click", () => {
+      if (inputBox.value) {
+        let searched = inputBox.value.toLowerCase();
+        fetch(`https://www.omdbapi.com/?s=${searched}&apikey=979eb7eb`)
+          .then((res) => res.json())
+          .then((data) => {
+            result.innerHTML = ""
+            let movieList = data.Search;
+            movieList.map((e) => {
+              const li = document.createElement("li");
+              li.innerHTML = ` 
+                    <div class="movie-list">
+                    <img src="${e.Poster}" alt="Images">
+                    <span class="title">${e.Title}</span>
+                    <span class="year"> YEAR:${e.Year}</span>
+                    <span class="imdb">Imdb${e.imdbID}</span>
+                    <span class="genre">Genre: ${e.Type}</span>
+                </div>`;
+              result.appendChild(li);
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  </script>
+</html>
